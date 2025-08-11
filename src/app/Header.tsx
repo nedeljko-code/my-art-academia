@@ -1,3 +1,5 @@
+import Sparkle from "./Sparkle";
+
 type HeaderProps = {
   membershipImage: string;
   activeLinkId?: string;
@@ -24,68 +26,82 @@ export default function Header({
   return (
     <section className="h-full w-full bg-[#efeeee] flex flex-col gap-[clamp(8px,1vw,18px)]">
       {/* Gornji deo */}
-      <div
-        className="relative h-[5vw] min-h-[40px] shrink-0
-               bg-[url('/images/border2.png')]
-               bg-cover bg-center
-               drop-shadow-[0_10px_12px_rgba(0,0,0,0.4)]"
-      >
-        {/* Grid: leva polovina + desna polovina */}
-        <div className="absolute inset-0 grid grid-cols-2 items-center px-4 md:px-6 ">
-          {/* Leva polovina: Student log in */}
-          <div className="flex items-center">
-            <span className="text-[clamp(20px,3.5vw,42px)] pl-[6vw] font-semibold">
-              Student log in
-            </span>
-          </div>
+     <div className="relative w-full h-[6vw] min-h-[56px]
+                bg-[url('/images/border2.png')] bg-cover bg-center">
 
-          {/* Desna polovina: (2/3) links + (1/3) MEMBERSHIP */}
-          <div className="grid grid-cols-3 items-center">
-            {/* 2/3: Behind / Reviews / FAQ */}
-            <nav className="col-span-2 flex justify-center text-[clamp(20px,3.5vw,42px)] font-semibold">
-              <a href="/behind" className="hover:opacity-70 mr-[2.5vw]">
-                Behind the Scenes
-              </a>
-              <div className="flex gap-[1.5vw]">
-                <a href="/reviews" className="hover:opacity-70">
-                  Reviews
-                </a>
-                <a href="/faq" className="hover:opacity-70">
-                  FAQ
-                </a>
-              </div>
-            </nav>
+  {/* 40 / 60 (radi do 380) */}
+  <div className="absolute inset-0 z-20 grid h-full gap-0 grid-cols-[0.4fr_0.6fr]">
+    {/* Leva polovina */}
+    <div className="flex items-center justify-start pl-[2vw] md:pl-[3vw]">
+  <span className="inline-flex items-center gap-[0.6ch] font-semibold whitespace-nowrap
+                   text-[clamp(16px,1.8vw,26px)]
+                   max-[1023px]:text-[clamp(12px,1.25vw,18px)]
+                   max-[740px]:text-[12px]
+                   max-[600px]:text-[11px] max-[600px]:tracking-[-0.01em]
+                   max-[500px]:text-[10px]">
+    <Sparkle className="h-[0.9em] w-[0.9em] text-[#9F61E1] fill-current" />
+    <span>Student log in</span>
+  </span>
+</div>
 
-            {/* 1/3: MEMBERSHIP (caps) */}
-            <div className="flex justify-end z-20">
-              <a
-                href="/membership"
-                className="tracking-wide text-[clamp(20px,3.5vw,42px)] font-semibold"
-              >
-                MEMBERSHIP
-              </a>
-            </div>
-          </div>
-        </div>
+    {/* Desna polovina → 66 / 34 */}
+    <div className="grid grid-cols-[2fr_1fr] items-center h-full
+                    max-[560px]:grid-cols-[2.2fr_0.8fr]
+                    max-[500px]:grid-cols-[2.3fr_0.7fr]">
+      {/* 66%: NAV – poravnat levo */}
+      <nav
+  className="
+    min-w-0 flex items-center justify-start whitespace-nowrap font-semibold
+    gap-0
+    space-x-[clamp(6px,1vw,16px)]
+    max-[1023px]:space-x-[clamp(4px,0.9vw,12px)]
+    max-[740px]:space-x-[6px]
+    max-[600px]:space-x-[4px]
+    max-[500px]:space-x-[3px]
+    text-[clamp(15px,1.7vw,24px)]
+    max-[1023px]:text-[clamp(12px,1.25vw,18px)]
+    max-[740px]:text-[12px]
+    max-[600px]:text-[11px] max-[600px]:tracking-[-0.01em]
+    max-[500px]:text-[10px]
+  "
+>
+  <a href="/behind"  className="hover:opacity-70">Behind the Scenes</a>
+  <a href="/reviews" className="hover:opacity-70">Reviews</a>
+  <a href="/faq"     className="hover:opacity-70">FAQ</a>
+</nav>
 
-        {/* (opciono) kartica/PNG ispod MEMBERSHIP teksta */}
-        <div className="absolute right-0 top-0 z-10">
-          <img
-            src="/images/Membership-LiveC (1).png"
-            alt="Membership"
-            className="h-[6vw] min-h-[48px] object-contain"
-          />
-        </div>
-      </div>
+      {/* 34%: MEMBERSHIP desno */}
+      <div className="min-w-0 flex items-center justify-end pr-[2vw] max-[600px]:pr-[1.2vw]">
+  <a href="/membership"
+     className="inline-flex items-center gap-[0.6ch] pr-[1.2vw] tracking-wide whitespace-nowrap font-semibold
+                text-[clamp(16px,1.8vw,26px)]
+                max-[1023px]:text-[clamp(12px,1.25vw,18px)]
+                max-[740px]:text-[12px]
+                max-[600px]:text-[11px] max-[600px]:tracking-[-0.01em]
+                max-[500px]:text-[10px]">
+    <Sparkle className="h-[0.9em] w-[0.9em] text-[#9F61E1] fill-current" />
+    <span>MEMBERSHIP</span>
+  </a>
+</div>
+    </div>
+  </div>
+
+  {/* Sticker – ostaje isto, skriven <1024 da ne smeta */}
+  <img
+    src="/images/Membership-LiveC (1).png"
+    alt="Membership"
+    className="absolute top-0 right-0 z-10 h-[6vw] min-h-[48px] object-contain pointer-events-none hidden lg:block"
+  />
+</div>
 
       {/* Donji deo */}
-      <div className="grid grid-cols-3 items-start px-[5%] pt-[clamp(6px,1.2vw,18px)] mt-[clamp(8px,2.5vw,30px)]">
+      <div className="grid grid-cols-3 items-start px-[5%]  mt-[clamp(8px,2.5vw,30px)]">
         {/* Levi: linkovi */}
         <nav
           className="flex flex-col gap-1 
-                text-[clamp(20px,2.8vw,44px)] 
+                text-[clamp(20px,2.8vw,36px)] 
                 font-bold leading-[0.95] 
-                -translate-y-[6%] md:-translate-y-[8%]"
+                "
         >
           {links.map((l) => (
             <a

@@ -17,7 +17,7 @@ export default function ColorTrailTitle({
   trailColors = ["#000000","#a855f7","#9333ea","#8a00c2","#ca5cdd"],
   delays = [0, 0.2, 0.22, 0.24, 0.26],
   palette = ["#214DEB","#82C3D2","#FFC52C","#E58049","#FFC06E","#9F61E1","#FFABEF","#1435AA","#DE471D","#000000"],
-  className = "text-9xl font-semibold tracking-[0.01em]"
+  className="font-semibold text-[clamp(56px,12vw,180px)] sm:text-[clamp(64px,10vw,200px)] leading-[0.9] tracking-[clamp(0.003em,0.4vw,0.015em)]"
 }: Props) {
   const lines = useMemo(() => title.split("\n"), [title]);
 
