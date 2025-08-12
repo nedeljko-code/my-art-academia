@@ -71,7 +71,7 @@ export default function ColorTrailTitle({
   };
 
   return (
-    <div className="relative w-full h-screen flex items-center justify-center  overflow-hidden select-none bg-[#efeeee]">
+    <div className="relative w-full h-screen flex items-center justify-center  overflow-hidden select-none bg-[#E8E6DF]">
       {trailColors.map((layerColor, i) => (
         <motion.div
           key={i}

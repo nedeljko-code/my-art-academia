@@ -24,10 +24,10 @@ export default function Header({
   const logoSrc = "/images/MyArtLogo.png";
 
   return (
-    <section className="h-full w-full bg-[#efeeee] flex flex-col gap-[clamp(8px,1vw,18px)]">
+    <section className="h-full w-full bg-[#E8E6DF] flex flex-col gap-[clamp(8px,1vw,18px)]">
       {/* Gornji deo */}
      <div className="relative w-full h-[6vw] min-h-[56px]
-                bg-[url('/images/border2.png')] bg-cover bg-center">
+                bg-[url('/images/border.png')] bg-cover bg-center">
 
   {/* 40 / 60 (radi do 380) */}
   <div className="absolute inset-0 z-20 grid h-full gap-0 grid-cols-[0.4fr_0.6fr]">
@@ -46,44 +46,35 @@ export default function Header({
 
     {/* Desna polovina → 66 / 34 */}
     <div className="grid grid-cols-[2fr_1fr] items-center h-full
-                    max-[560px]:grid-cols-[2.2fr_0.8fr]
-                    max-[500px]:grid-cols-[2.3fr_0.7fr]">
-      {/* 66%: NAV – poravnat levo */}
-      <nav
-  className="
-    min-w-0 flex items-center justify-start whitespace-nowrap font-semibold
-    gap-0
-    space-x-[clamp(6px,1vw,16px)]
-    max-[1023px]:space-x-[clamp(4px,0.9vw,12px)]
-    max-[740px]:space-x-[6px]
-    max-[600px]:space-x-[4px]
-    max-[500px]:space-x-[3px]
-    text-[clamp(15px,1.7vw,24px)]
-    max-[1023px]:text-[clamp(12px,1.25vw,18px)]
-    max-[740px]:text-[12px]
-    max-[600px]:text-[11px] max-[600px]:tracking-[-0.01em]
-    max-[500px]:text-[10px]
-  "
->
-  <a href="/behind"  className="hover:opacity-70">Behind the Scenes</a>
-  <a href="/reviews" className="hover:opacity-70">Reviews</a>
-  <a href="/faq"     className="hover:opacity-70">FAQ</a>
-</nav>
+                max-[450px]:grid-cols-[2.2fr_0.8fr]  /* malo više prostora za nav */
+">
+  {/* NAV */}
+  <nav className="min-w-0 flex items-center justify-start whitespace-nowrap
+                  gap-[clamp(6px,1vw,16px)]
+                  text-[clamp(16px,1.8vw,26px)]
+                  max-[700px]:text-[11px] max-[600px]:gap-[4px]
+                  max-[470px]:text-[9px] max-[450px]:gap-[3px] font-semibold">
+    <a href="/behind"  className="hover:opacity-70 mr-[1vw]
+                       max-[600px]:mr-[6px] max-[450px]:mr-[4px]">
+      Behind the Scenes
+    </a>
+    <a href="/reviews" className="hover:opacity-70 mr-[1vw]">Reviews</a>
+    <a href="/faq"     className="hover:opacity-70 mr-[1vw]">FAQ</a>
+  </nav>
 
-      {/* 34%: MEMBERSHIP desno */}
-      <div className="min-w-0 flex items-center justify-end pr-[2vw] max-[600px]:pr-[1.2vw]">
-  <a href="/membership"
-     className="inline-flex items-center gap-[0.6ch] pr-[1.2vw] tracking-wide whitespace-nowrap font-semibold
-                text-[clamp(16px,1.8vw,26px)]
-                max-[1023px]:text-[clamp(12px,1.25vw,18px)]
-                max-[740px]:text-[12px]
-                max-[600px]:text-[11px] max-[600px]:tracking-[-0.01em]
-                max-[500px]:text-[10px]">
-    <Sparkle className="h-[0.9em] w-[0.9em] text-[#9F61E1] fill-current" />
-    <span>MEMBERSHIP</span>
-  </a>
+  {/* MEMBERSHIP */}
+  <div className="min-w-0 flex items-center justify-end pr-[4vw]
+                  max-[600px]:pr-[1.2vw]">
+    <a href="/membership"
+       className="tracking-tight whitespace-nowrap font-semibold
+                  text-[clamp(15px,1.7vw,24px)]
+                  max-[600px]:text-[11px]
+                  max-[450px]:text-[10px]">
+                    <Sparkle className="h-[0.9em] w-[0.9em] text-[#9F61E1] fill-current" />
+      MEMBERSHIP
+    </a>
+  </div>
 </div>
-    </div>
   </div>
 
   {/* Sticker – ostaje isto, skriven <1024 da ne smeta */}
