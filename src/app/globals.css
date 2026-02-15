@@ -1,9 +1,17 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --bg: #E8E6DF;            
+  --header-active: #9F61E1; 
+  --cta:#FFABEF
 }
+
+/* teme sa tvog screenshota */
+.theme-sand     { --bg: #E8E6DF; }
+.theme-lavender { --bg: #EAE2F6; }
+.theme-sky      { --bg: #D9ECFF; }
+.theme-cream    { --bg: #FFFEED; } 
+.theme-ash      { --bg: #EFEFEE; }
 
 @theme inline {
   --color-background: var(--background);

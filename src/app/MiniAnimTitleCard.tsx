@@ -1,11 +1,10 @@
 "use client";
-
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 
 type Props = {
   title: string;
-  imgSrc: string;
+  imgSrc?: string;
   reverse?: boolean;
   mediaAlign?: "left" | "center" | "right";
   className?: string;
@@ -15,9 +14,12 @@ type Props = {
   mediaNudge?: number;
   ctaText?: string;
   ctaHref?: string;
+  showCta?: boolean;
+  hideText?: boolean;
+  ctaInline?: boolean;
+  ctaColor?: string;
 };
 
-/** true kada je viewport >= 1280px (Tailwind xl) */
 function useIsXlUp() {
   const [isXl, setIsXl] = useState(false);
   useEffect(() => {
@@ -42,11 +44,25 @@ export default function MiniAnimTitleCard({
   mediaNudge = 0,
   ctaText = "Learn more",
   ctaHref = "#",
+  showCta = true,
+  hideText = false,
+  ctaInline = false,
+  ctaColor,
 }: Props) {
+  
   const isXl = useIsXlUp();
+  const hasText = !hideText && title.trim().length > 0;
+  const hasMedia = Boolean(imgSrc);
+  const ctaStyle = ctaColor ? { color: ctaColor } : undefined;
+  const ctaCls =
+  "inline-block font-medium text-[clamp(12px,1.4vw,14px)] hover:underline";
 
-  // 2 kolone kreću tek od xl
-  const cols = reverse ? "lg:grid-cols-[2fr_3fr]" : "lg:grid-cols-[3fr_2fr]";
+  const cols =
+    hasMedia && hasText
+      ? reverse
+        ? "lg:grid-cols-[2fr_3fr]"
+        : "lg:grid-cols-[3fr_2fr]"
+      : "lg:grid-cols-1";
 
   const imageJustifyXl =
     mediaAlign === "left"
@@ -55,78 +71,116 @@ export default function MiniAnimTitleCard({
       ? "xl:justify-end"
       : "xl:justify-center";
 
-  // nudge tek od xl
-  const textStyle: React.CSSProperties = reverse
-    ? { marginRight: isXl ? -textNudge : 0 }
-    : { marginLeft: isXl ? -textNudge : 0 };
+  const textStyle = reverse
+    ? ({ marginRight: isXl ? -textNudge : 0 } as const)
+    : ({ marginLeft: isXl ? -textNudge : 0 } as const);
 
-  const mediaStyle: React.CSSProperties = reverse
-    ? { marginLeft: isXl ? -mediaNudge : 0 }
-    : { marginRight: isXl ? -mediaNudge : 0 };
+  const mediaStyle = reverse
+    ? ({ marginLeft: isXl ? -mediaNudge : 0 } as const)
+    : ({ marginRight: isXl ? -mediaNudge : 0 } as const);
+
+  const textAlignClasses = hasMedia
+    ? reverse
+      ? "lg:justify-self-end"
+      : "lg:justify-self-start"
+    : "lg:justify-self-center";
+
+  const titleAlignClasses = hasMedia
+    ? "text-center lg:text-left"
+    : "text-center lg:text-center";
+
+  const titleLines = title.split("\n");
+  const lastLine = titleLines.pop() ?? "";
 
   return (
     <div
-      className={`grid grid-cols-1 ${cols} items-center lg:items-center
-                  gap-x-2 xl:gap-x-3 gap-y-3 p-3 xl:p-5 rounded-xl bg-[#E8E6DF]
-                  min-h-[clamp(160px,44vw,240px)]
-                  sm:min-h-[clamp(180px,36vw,280px)]
-                  xl:min-h-[clamp(200px,26vw,340px)]
-                  ${className}`}
+      className={`grid grid-cols-1 ${cols} justify-items-center lg:justify-items-center
+                  gap-x-2 lg:gap-x-3 gap-y-3 p-3 lg:p-5 rounded-xl bg-[var(--bg)]
+                  min-h-auto
+                  lg:min-h-[clamp(180px,26vw,300px)]
+                  xl:min-h-[clamp(200px,24vw,340px)]
+                  ${className}  `}
     >
-      {/* MEDIA */}
-      <div
-         className={`relative ${reverse ? "lg:order-2" : ""} ${mediaWrapClassName}
-+             flex justify-center lg:justify-center ${imageJustifyXl} lg:items-center
-                    h-[clamp(140px,42vw,220px)]
-                    sm:h-[clamp(160px,34vw,260px)]
-                    xl:h-[clamp(190px,25vw,330px)]
-                    w-full overflow-visible rounded-lg`}
-        style={mediaStyle}
-      >
-        <motion.img
-          src={imgSrc}
-          alt=""
-          className="h-full w-auto object-contain select-none"
-          initial={{ opacity: 0, y: 12, scale: 0.98 }}
-          whileInView={{ opacity: 1, y: 0, scale: 1 }}
-          viewport={{ once: true, amount: 0.5 }}
-          transition={{ duration: 0.5, ease: "easeOut" }}
-        />
-      </div>
+      {/* MEDIA samo ako ima slika */}
+      {hasMedia && (
+        <div
+          className={`relative ${
+            reverse && hasText ? "lg:order-2" : ""
+          } ${mediaWrapClassName}
+                      flex justify-center ${imageJustifyXl} lg:items-center
+                      h-[clamp(140px,42vw,220px)]
+                      sm:h-[clamp(160px,34vw,260px)]
+                      xl:h-[clamp(190px,25vw,330px)]
+                      w-full overflow-visible rounded-lg`}
+          style={mediaStyle}
+        >
+          <motion.img
+            src={imgSrc!}
+            alt=""
+            className="h-full w-auto object-contain select-none"
+            initial={{ opacity: 0, y: 12, scale: 0.98 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            transition={{ duration: 0.5, ease: "easeOut" }}
+          />
+        </div>
+      )}
 
       {/* TEXT */}
-      <div
-        className={`self-center justify-self-center
-                    ${reverse ? "lg:justify-self-end" : "lg:justify-self-start"}
-                    ${contentClassName}`}
-        style={textStyle}
-      >
-        <motion.h3
-          initial={{ opacity: 0, y: 8 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.6 }}
-          transition={{ duration: 0.6, ease: "easeOut" }}
-          className="whitespace-pre-line font-semibold leading-tight
-             text-[clamp(16px,4.2vw,22px)] xl:text-[clamp(20px,2.4vw,32px)]
-             text-center lg:text-left"
+      {hasText && (
+        <div
+          className={`self-center justify-self-center ${textAlignClasses} ${contentClassName}`}
+          style={textStyle}
         >
-          {title}
-        </motion.h3>
+          <motion.h3
+  initial={{ opacity: 0, y: 8 }}
+  animate={{ opacity: 1, y: 0 }}
+  transition={{ duration: 0.6, ease: "easeOut" }}
+  className={`font-semibold leading-tight
+              text-[clamp(16px,4.2vw,22px)] lg:text-[clamp(20px,2.4vw,32px)]
+              ${titleAlignClasses}`}
+>
+  
+  {titleLines.map((ln, i) => (
+    <span key={i} className="block">{ln}</span>
+  ))}
 
-        {ctaText && (
-          <motion.a
-            href={ctaHref}
-            initial={{ opacity: 0, y: 6 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.6 }}
-            transition={{ duration: 3, delay: 0.12, ease: "easeOut" }}
-            className="mt-2 inline-block text-[clamp(12px,1.4vw,14px)] font-medium
-             text-[#FFABEF] hover:underline"
-          >
-            {ctaText}
-          </motion.a>
-        )}
-      </div>
+  
+  <span className="inline-flex items-baseline gap-[0.35em]">
+    <span className="align-baseline leading-[1em]">{lastLine}</span>
+
+    {showCta && ctaText && ctaInline && (
+      <motion.a
+        href={ctaHref}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.4, delay: 0.15 }}
+        className={`whitespace-nowrap align-baseline leading-[1em]
+                    inline-block font-medium text-[clamp(12px,1.4vw,14px)]
+                    hover:underline !text-[var(--cta)]`}   
+        style={ctaColor ? { color: ctaColor } : undefined}
+      >
+        {ctaText}
+      </motion.a>
+    )}
+  </span>
+</motion.h3>
+
+          
+          {showCta && ctaText && !ctaInline && (
+            <motion.a 
+            
+              href={ctaHref}
+              initial={{ opacity: 0, y: 6 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.55, delay: 0.25, ease: "easeOut" }}
+              className={`mt-2 ${ctaCls} !text-[var(--cta)]`} // koristi var(--cta) iz teme
+              style={ctaStyle} // ako pošalješ ctaColor, on preboji
+            >
+              {ctaText}
+            </motion.a>
+          )}
+        </div>
+      )}
     </div>
   );
 }
